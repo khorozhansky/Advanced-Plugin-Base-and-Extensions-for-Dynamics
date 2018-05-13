@@ -121,9 +121,15 @@
     public static void UpdateContext(this IPluginExecutionContext currentContext, IPluginExecutionContext contextUpdate)
     {
       if (currentContext == null)
+      {
         throw new ArgumentNullException(nameof(currentContext));
+      }
+
       if (contextUpdate == null)
+      {
         throw new ArgumentNullException(nameof(contextUpdate));
+      }
+
       CopyParameterCollection(contextUpdate.InputParameters, currentContext.InputParameters);
       CopyParameterCollection(contextUpdate.OutputParameters, currentContext.OutputParameters);
       CopyEntityImageCollection(contextUpdate.PreEntityImages, currentContext.PreEntityImages);
@@ -140,7 +146,10 @@
     public static RemoteExecutionContext CopyContext(this IPluginExecutionContext context)
     {
       if (context == null)
+      {
         return null;
+      }
+
       var executionContext = new RemoteExecutionContext {
         BusinessUnitId = context.BusinessUnitId,
         CorrelationId = context.CorrelationId,
@@ -177,20 +186,30 @@
     private static void CopyParameterCollection(ParameterCollection source, ParameterCollection destination)
     {
       if (source == null || destination == null)
+      {
         return;
+      }
+
       foreach (KeyValuePair<string, object> keyValuePair in source)
       {
         if (keyValuePair.Value == null || IsProcessedType(keyValuePair.Value.GetType()))
+        {
           destination[keyValuePair.Key] = keyValuePair.Value;
+        }
       }
     }
 
     private static void CopyEntityImageCollection(EntityImageCollection source, EntityImageCollection destination)
     {
       if (source == null || destination == null)
+      {
         return;
+      }
+
       foreach (KeyValuePair<string, Entity> keyValuePair in source)
+      {
         destination.Add(keyValuePair);
+      }
     }
 
     private static bool IsProcessedType(Type valueType)

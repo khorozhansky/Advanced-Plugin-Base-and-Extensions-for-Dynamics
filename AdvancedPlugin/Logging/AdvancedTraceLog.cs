@@ -108,7 +108,7 @@ namespace AdvancedPlugin.Logging
       else if (exc is PluginBusinessLogicExceptionWithSimpleLogging)
       {
         exceptionToThrow = new InvalidPluginExecutionException(exc.Message);
-        includeTraceText = false;
+        includeTraceText = customVerboseLogSwitchedOn;
       }
       else if (exc is PluginBusinessLogicExceptionWithFullLogging)
       {
@@ -131,7 +131,6 @@ namespace AdvancedPlugin.Logging
         var pluginExecCtx = pluginCtx.ExecContext;
         var logs = new List<Entity>();
         string traceText = null;
-        includeTraceText = includeTraceText || customVerboseLogSwitchedOn;
         if (includeTraceText)
         {
           traceText = this.CustomTracingService.GetTraceInfo(takeCached: true);

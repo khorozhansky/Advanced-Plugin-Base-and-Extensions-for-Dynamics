@@ -1,13 +1,11 @@
 ﻿namespace AdvancedPluginDemo.Logic.Account
 {
   using System;
-  using System.Diagnostics;
 
   using AdvancedPlugin.Exceptions;
   using AdvancedPlugin.Logging;
   using AdvancedPlugin.Utils;
 
-  using Plugins;
   using CrmProxy;
 
   using Microsoft.Xrm.Sdk;
@@ -23,8 +21,7 @@
         () =>
           {
             this.PluginCtx.Trace($"Getting DemoIndicatorSharedVariableValue for the first time and before any reset...");
-            string value;
-            this.PluginCtx.TryGetSharedVariableValue(nameof(this.DemoIndicatorSharedVariableValue), out value);
+            this.PluginCtx.TryGetSharedVariableValue(nameof(this.DemoIndicatorSharedVariableValue), out string value);
             return value;
           });
     }
@@ -148,13 +145,40 @@
 
     #endregion
 
+    #region Assign Message
+
+    public void AssignAsUpdatePreOperationSync()
+    {
+      this.ValidateByBaseValidators();
+      this.ValidatePreImage();
+
+      this.WrapInTraceWithElapsedTime(
+        this.PreventAssignToTeamIfParentAccountIsNotSpecifed, nameof(this.PreventAssignToTeamIfParentAccountIsNotSpecifed));
+    }
+
+    public void AssignAsUpdatePostOperationSync()
+    {
+      this.ValidateByBaseValidators();
+      this.ValidatePreImage();
+
+      this.WrapInTraceWithElapsedTime(
+        this.CreatePostOnAssignToTeam, nameof(this.CreatePostOnAssignToTeam));
+    }
+
+    #endregion
+
+    #region Set State Message
+
     public void SetStateAsUpdatePreOperationSync()
     {
       this.ValidateByBaseValidators();
       this.ValidatePreImage();
 
-      this.PreventDeactivationIfOwnerIsAnotherUser();
+      this.WrapInTraceWithElapsedTime(
+        this.PreventDeactivationIfOwnerIsAnotherUser, nameof(this.PreventDeactivationIfOwnerIsAnotherUser));
     }
+
+    #endregion
 
     private void SetDemoSharedVariable()
     {
@@ -373,7 +397,7 @@
       }
 
       var newValue = parentAccountExt.NewValue;
-      var text = newValue == null ? "Parent account has been removed." : $"Parent account is set to {newValue?.Name}";
+      var text = newValue == null ? "Parent account has been removed from the account." : $"Parent account has been set to {newValue?.Name}.";
       var post = new Post
                     {
                      RegardingObjectId = currentEntity.ToEntityReference(),
@@ -384,5 +408,61 @@
 
       pluginCtx.OrgServiceOnBehalfOfSystemUser.Create(post);
     }
+
+    private void PreventAssignToTeamIfParentAccountIsNotSpecifed()
+    {
+      var pluginCtx = this.PluginCtx;
+      var entityExt = pluginCtx.TargetEntityExt;
+      var ownerIdValueExt = entityExt.GetValue<EntityReference>(Account.Fields.OwnerId);
+      if (!ownerIdValueExt.IsModified)
+      {
+        return;
+      }
+
+      var ownerRef = ownerIdValueExt.NewValue;
+      var ownerIsTeam = ownerRef.LogicalName.Equals(Team.EntityLogicalName);
+      if (!ownerIsTeam)
+      {
+        return;
+      }
+
+      var parentAccountExt = entityExt.GetValue<EntityReference>(Account.Fields.ParentAccountId);
+      if (parentAccountExt.IsNull)
+      {
+        throw new PluginBusinessLogicExceptionWithSimpleLogging("You cannot assign account to a team unless parent account is specified.");
+      }
+    }
+
+    private void CreatePostOnAssignToTeam()
+    {
+      var pluginCtx = this.PluginCtx;
+      var entityExt = pluginCtx.TargetEntityExt;
+      var ownerIdValueExt = entityExt.GetValue<EntityReference>(Account.Fields.OwnerId);
+      if (!ownerIdValueExt.IsModified)
+      {
+        return;
+      }
+
+      var ownerRef = ownerIdValueExt.NewValue;
+      var ownerIsTeam = ownerRef.LogicalName.Equals(Team.EntityLogicalName);
+      if (!ownerIsTeam)
+      {
+        return;
+      }
+
+      var post = new Post
+                   {
+                     RegardingObjectId = entityExt.ToEntityReference(),
+                     SourceEnum = Post_Source.ManualPost,
+                     TypeEnum = Post_Type.News,
+                     Text = $"News on behalf of current System User: assigned to a team."
+                   };
+
+      pluginCtx.OrgService.Create(post);
+
+      post.Text = $"News on behalf of Initiating User: assigned to a team.";
+      pluginCtx.OrgServiceOnBehalfOfInitiatingUser.Create(post);
+    }
+
   }
 }

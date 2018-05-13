@@ -1,6 +1,7 @@
 ﻿namespace AdvancedPlugin.Utils
 {
   using System;
+  using System.Collections;
   using System.Collections.Generic;
   using System.Linq;
   using System.Linq.Expressions;
@@ -163,34 +164,63 @@
 
       var type = typeof(T);
       var underlyingType = Nullable.GetUnderlyingType(type);
-      if (underlyingType != null)
+      if (underlyingType != null && underlyingType.IsEnum)
       {
-        if (underlyingType.IsEnum)
+        var optionSetValue = value as OptionSetValue;
+        return optionSetValue == null ? defaultValue : (T)Enum.ToObject(underlyingType, optionSetValue.Value);
+      }
+
+      if (type.IsGenericType)
+      {
+        if (typeof(IEnumerable<>).IsAssignableFrom(type.GetGenericTypeDefinition()))
         {
-          var optionSetValue = value as OptionSetValue;
-          return optionSetValue == null ? defaultValue : (T)Enum.ToObject(underlyingType, optionSetValue.Value);
-        }
-        
-        if (!TypeHelper.IsGenericEnumerable(type))
-        {
-          // Most likely, it will is IEnumerable<ActivityParty> so check it directly to speed up the process
           if (type == typeof(IEnumerable<Entity>))
           {
             return (T)entity.GetCollectionAttrValue<Entity>(attributeName, aliased);
           }
 
           var collection = value as EntityCollection;
-          if (collection?.Entities == null)
+          var entities = collection?.Entities;
+          if (entities == null)
           {
             return defaultValue;
           }
 
           var enumerableType = TypeHelper.GetEnumerableType(type);
+          var containerType = typeof(List<>).MakeGenericType(enumerableType);
+          var containerList = (IList)Activator.CreateInstance(containerType);
+
+          var toEntityMethod = typeof(Entity).GetMethod("ToEntity");
           // ReSharper disable once PossibleNullReferenceException
-          var toEntityGenericMethod = typeof(Entity).GetMethod("ToEntity").MakeGenericMethod(enumerableType); 
-          return (T)collection.Entities.Select(e => toEntityGenericMethod.Invoke(e, null));
+          var toEntityGenericMethod = toEntityMethod.MakeGenericMethod(enumerableType);
+
+          foreach (var e in entities)
+          {
+            containerList.Add(toEntityGenericMethod.Invoke(e, null));
+          }
+
+          return (T)containerList;
+
+
+          
+          //// ReSharper disable once PossibleNullReferenceException
+          //var toEntityGenericMethod = typeof(Entity).GetMethod("ToEntity").MakeGenericMethod(enumerableType);
+
+          //Type listType = typeof(List<>).MakeGenericType(enumerableType);
+          //dynamic list = Activator.CreateInstance(listType);
+          //foreach (var collectionEntity in collection.Entities)
+          //{
+          //  list.Add(toEntityGenericMethod.Invoke(collectionEntity, null));
+          //}
+
+          //return (T)list;
+          //list.AddRange(collection.Entities.Select(e => toEntityGenericMethod.Invoke(e, null)).ToList());
+          //return (T)collection.Entities.Select(e => toEntityGenericMethod.Invoke(e, null));
         }
+
+        throw new NotImplementedException($"Getting attribute value as {type.FullName} is not implemented.");
       }
+
 
       return (T)value;
     }

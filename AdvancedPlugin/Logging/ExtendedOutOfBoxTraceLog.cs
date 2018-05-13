@@ -42,7 +42,7 @@ namespace AdvancedPlugin.Logging
       else if (exc is PluginBusinessLogicExceptionWithSimpleLogging)
       {
         exceptionToThrow = new InvalidPluginExecutionException(exc.Message);
-        saveParamsImagesSharedVarsToTraceText = false;
+        saveParamsImagesSharedVarsToTraceText = customVerboseLogSwitchedOn;
         saveTraceDetailsToTraceText = false;
       }
       else if (exc is PluginBusinessLogicExceptionWithFullLogging)

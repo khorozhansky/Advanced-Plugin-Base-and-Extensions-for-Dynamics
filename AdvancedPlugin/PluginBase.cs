@@ -980,10 +980,7 @@
           return this.targetEntity;
         }
 
-        set
-        {
-          this.targetEntityAsBaseEntity = value;
-        }
+        set => this.targetEntityAsBaseEntity = value;
       }
 
       /// <summary>
@@ -992,10 +989,7 @@
       /// <value>The input target entity.</value>
       public Entity TargetEntityAsBaseEntity
       {
-        get
-        {
-          return this.targetEntityAsBaseEntity ?? (this.targetEntityAsBaseEntity = this.GetInputParameter<Entity>(TargetKey));
-        }
+        get => this.targetEntityAsBaseEntity ?? (this.targetEntityAsBaseEntity = this.GetInputParameter<Entity>(TargetKey));
 
         set
         {
@@ -1052,10 +1046,7 @@
           return this.outputBusinessEntity;
         }
 
-        set
-        {
-          this.OutputBusinessEntityAsBaseEntity = value;
-        }
+        set => this.OutputBusinessEntityAsBaseEntity = value;
       }
 
       /// <summary>
@@ -1064,11 +1055,9 @@
       /// <value>The entity.</value>
       public Entity OutputBusinessEntityAsBaseEntity
       {
-        get
-        {
-          return this.outputBusinessEntityAsBaseEntity
-                 ?? (this.outputBusinessEntityAsBaseEntity = this.GetOutputParameter<Entity>(BusinessEntityKey));
-        }
+        get =>
+          this.outputBusinessEntityAsBaseEntity
+          ?? (this.outputBusinessEntityAsBaseEntity = this.GetOutputParameter<Entity>(BusinessEntityKey));
 
         set
         {
@@ -1247,10 +1236,7 @@
           return this.updateContent;
         }
 
-        set
-        {
-          this.updateContentEntity = value;
-        }
+        set => this.updateContentEntity = value;
       }
 
       /// <summary>
@@ -1261,11 +1247,9 @@
       /// </value>
       public Entity UpdateContentEntity
       {
-        get
-        {
-          return this.updateContentEntity
-                 ?? (this.updateContentEntity = this.GetInputParameter<Entity>(UpdateContentKey));
-        }
+        get =>
+          this.updateContentEntity
+          ?? (this.updateContentEntity = this.GetInputParameter<Entity>(UpdateContentKey));
 
         set
         {
@@ -1292,6 +1276,7 @@
         // ReSharper disable once RedundantCast
         const string EntityLogicalName = "serviceendpoint";
         var serviceBusEndpointRef = new EntityReference(EntityLogicalName, serviceBusEndpointId);
+        // ReSharper disable once RedundantCast
         this.ServiceBusNotificationEndpoint.Execute(serviceBusEndpointRef, (IExecutionContext)this.ExecContext);
         this.TraceWithElapsedTime("Service Bus notified.");
       }
@@ -1443,8 +1428,7 @@
       /// </returns>
       public bool TryGetSharedVariableValue<T>(string name, IPluginExecutionContext execCtx, out T value)
       {
-        object objValue;
-        var result = this.TryGetSharedVariableValue(name, execCtx, out objValue);
+        var result = this.TryGetSharedVariableValue(name, execCtx, out var objValue);
         value = result ? (T)objValue : default(T);
         return result;
       }
@@ -1460,8 +1444,7 @@
       /// </returns>
       public bool TryGetSharedVariableValue<T>(string name, out T value)
       {
-        object objValue;
-        var result = this.TryGetSharedVariableValue(name, out objValue);
+        var result = this.TryGetSharedVariableValue(name, out var objValue);
         value = result ? (T)objValue : default(T);
         return result;
       }

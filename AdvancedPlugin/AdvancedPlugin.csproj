@@ -45,6 +45,18 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugWithoutUpload|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugWithoutUpload\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseWithoutDeploy|AnyCPU'">
+    <OutputPath>bin\ReleaseWithoutDeploy\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.8.2.0.2\lib\net452\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
@@ -103,6 +115,7 @@
     <Compile Include="Utils\ExecutionContextHelper.cs" />
     <Compile Include="Extensions\EntityExt.cs" />
     <Compile Include="Utils\EntityHelper.cs" />
+    <Compile Include="Utils\FetchXmlQueryHelper.cs" />
     <Compile Include="Utils\JsonHelper.cs" />
     <Compile Include="Utils\PropertyHelper.cs" />
     <Compile Include="Utils\TypeHelper.cs" />
@@ -111,10 +124,11 @@
     <Compile Include="Extensions\ValueExt.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ILMerge.props" />
+    <None Include="ILMerge.props">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="key.snk" />
     <None Include="packages.config" />
-    <None Include="spkl.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ILMergeOrder.txt" />

@@ -96,5 +96,38 @@
       var ignoreIsSpecifiedProperty = !this.currentIsTarget;
       return new ValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName, ignoreIsSpecifiedProperty);
     }
+
+    public CollectionValueExt<T, TEntity> GetCollectionValue<T>(Expression<Func<T>> propertyExpression) where T : Entity
+    {
+      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
+      return this.GetCollectionValue<T>(attributeName);
+    }
+
+    public CollectionValueExt<T, TEntity> GetCollectionValue<T>(string attributeName) where T: Entity
+    {
+      return new CollectionValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
+    }
+
+    public SimpleValueExt<T, TEntity> GetSimpleValueExt<T>(Expression<Func<T>> propertyExpression)
+    {
+      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
+      return this.GetSimpleValueExt<T>(attributeName);
+    }
+
+    public SimpleValueExt<T, TEntity> GetSimpleValueExt<T>(string attributeName)
+    {
+      return new SimpleValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
+    }
+
+    public NullableEnumValueExt<T, TEntity> GetNullableEnumValueExt<T>(Expression<Func<T>> propertyExpression)
+    {
+      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
+      return this.GetNullableEnumValueExt<T>(attributeName);
+    }
+
+    public NullableEnumValueExt<T, TEntity> GetNullableEnumValueExt<T>(string attributeName)
+    {
+      return new NullableEnumValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
+    }
   }
 }

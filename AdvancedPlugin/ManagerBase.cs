@@ -145,6 +145,18 @@
     }
 
     /// <summary>
+    /// Wraps a method in trace with elapsed time.
+    /// </summary>
+    /// <param name="action">The action.</param>
+    /// <param name="name">The name of the "point".</param>
+    protected void WrapInTraceWithElapsedTime(Action action, string name)
+    {
+      this.PluginCtx.TraceWithElapsedTime("Enter {0}.", name);
+      action();
+      this.PluginCtx.TraceWithElapsedTime("Exit {0}.", name);
+    }
+
+    /// <summary>
     /// Validates the target as entity.
     /// </summary>
     /// <param name="pluginContext">The local context.</param>

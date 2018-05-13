@@ -21,12 +21,21 @@
     public void Trace(string format, params object[] args)
     {
       if (this.Sb.Length > 0)
+      {
         this.Sb.AppendLine();
+      }
+
       if (args.Length > 0)
+      {
         format = string.Format(CultureInfo.InvariantCulture, format, args);
+      }
+
       this.Sb.Append(format);
       if (this.Sb.Length <= 10240)
+      {
         return;
+      }
+
       this.Sb.Remove(0, this.Sb.Length - 10240);
     }
 
