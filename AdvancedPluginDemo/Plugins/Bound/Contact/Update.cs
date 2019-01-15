@@ -1,6 +1,7 @@
 namespace AdvancedPluginDemo.Plugins.Bound.Contact
 {
   using AdvancedPlugin;
+  using AdvancedPlugin.Constants;
 
   using Microsoft.Xrm.Sdk;
 
@@ -14,33 +15,19 @@ namespace AdvancedPluginDemo.Plugins.Bound.Contact
 
     protected override void InitializeStepsDefinition()
     {
-      //this.RegisterPluginStep(
-      //  Stage.PreValidate,
-      //  Mode.Synchronous,
-      //  PluginMessage.Update,
-      //  pluginCtx => this.RunInManager(
-      //    pluginCtx, m => m.UpdatePreValidationSync()));
-
-      //this.RegisterPluginStep(
-      //  Stage.PreOperation,
-      //  Mode.Synchronous,
-      //  PluginMessage.Update,
-      //  pluginCtx => this.RunInManager(
-      //    pluginCtx, m => m.UpdatePreOperationSync()));
+      this.RegisterPluginStep(
+        Stage.PreValidate,
+        Mode.Synchronous,
+        MessageName.Update,
+        pluginCtx => this.RunInManager(
+          pluginCtx, m => m.UpdatePreValidationSync()));
 
       this.RegisterPluginStep(
         Stage.PostOperation,
         Mode.Synchronous,
-        PluginMessage.Update,
+        MessageName.Update,
         pluginCtx => this.RunInManager(
           pluginCtx, m => m.UpdatePostOperationSync()));
-
-      //this.RegisterPluginStep(
-      //  Stage.PostOperation,
-      //  Mode.Asynchronous,
-      //  PluginMessage.Update,
-      //  pluginCtx => this.RunInManager(
-      //    pluginCtx, m => m.UpdatePostOperationAsync()));
     }
   }
 }

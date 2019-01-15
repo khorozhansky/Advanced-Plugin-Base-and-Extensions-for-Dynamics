@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AdvancedPluginDemo</RootNamespace>
     <AssemblyName>AdvancedPluginDemo</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
@@ -54,9 +54,6 @@
     <OutputPath>bin\ReleaseWithoutDeploy\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FakeItEasy, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
-      <HintPath>..\packages\FakeItEasy.3.2.0\lib\net40\FakeItEasy.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.8.2.0.2\lib\net452\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
       <Private>False</Private>
@@ -68,11 +65,11 @@
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.22.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.22.302111727\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.22.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.22.302111727\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.8.2.0.2\lib\net452\Microsoft.Xrm.Sdk.dll</HintPath>
@@ -80,14 +77,11 @@
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk.Deployment, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.Deployment.8.2.0.1\lib\net45\Microsoft.Xrm.Sdk.Deployment.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xrm.Sdk.Workflow, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.Workflow.8.2.0.1\lib\net45\Microsoft.Xrm.Sdk.Workflow.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xrm.Tooling.Connector, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.8.2.0.1\lib\net45\Microsoft.Xrm.Tooling.Connector.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -103,9 +97,6 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Workflow.Activities" />
-    <Reference Include="System.Workflow.ComponentModel" />
-    <Reference Include="System.Workflow.Runtime" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -113,25 +104,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrmProxy\CrmProxy.cs" />
-    <Compile Include="CrmProxy\OptionSets.cs" />
-    <Compile Include="Logic\Contact\ContactManager.cs" />
-    <Compile Include="Logic\Email\EmailManager.cs" />
-    <Compile Include="Logic\ManagerBase.cs" />
-    <Compile Include="Logic\Account\AccountManager.cs" />
+    <Compile Include="Logic\Base\ExtendedOutOfBoxTraceLogManagerBase.cs" />
+    <Compile Include="Plugins\Base\ExtendedOutOfBoxTraceLogPlugin.cs" />
+    <Compile Include="Plugins\Base\Ext\PluginCtxExt.cs" />
+    <Compile Include="Proxy\Entities.cs" />
+    <Compile Include="Proxy\OptionSets.cs" />
+    <Compile Include="Logic\Entities\Contact\ContactManager.cs" />
+    <Compile Include="Logic\Entities\Email\EmailManager.cs" />
+    <Compile Include="Logic\Base\AdvancedTraceLogManagerBase.cs" />
+    <Compile Include="Logic\Entities\Account\AccountManager.cs" />
     <Compile Include="Plugins\Bound\Contact\Base.cs" />
     <Compile Include="Plugins\Bound\Contact\Create.cs" />
     <Compile Include="Plugins\Bound\Contact\Update.cs" />
     <Compile Include="Plugins\Bound\Email\Base.cs" />
-    <Compile Include="Plugins\Bound\Email\Upate.cs" />
-    <Compile Include="Plugins\Bound\Account\AssignAsUpdate.cs" />
-    <Compile Include="Plugins\ServiceBusTraceLogPluginBase.cs" />
-    <Compile Include="Plugins\ExtendedOutOfBoxTraceLogPluginBase.cs" />
+    <Compile Include="Plugins\Bound\Email\Update.cs" />
     <Compile Include="Plugins\Bound\Account\Update.cs" />
-    <Compile Include="Plugins\Bound\Account\SetStateAsUpdate.cs" />
     <Compile Include="Plugins\Bound\Account\Create.cs" />
-    <Compile Include="Plugins\AdvancedTraceLogPluginBase.cs" />
-    <Compile Include="Plugins\PluginInCrmContextBase.cs" />
+    <Compile Include="Plugins\Base\AdvancedTraceLogPlugin.cs" />
     <Compile Include="Plugins\Bound\Account\Base.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -141,8 +130,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\coretools\CrmSvcUtil.exe.config" />
-    <None Include="bin\coretools\LicenseTerms.docx" />
+    <None Include=".editorconfig" />
     <None Include="ILMerge.props" />
     <None Include="key.snk" />
     <None Include="packages.config" />
@@ -152,20 +140,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\coretools\CrmSvcUtil.exe" />
-    <Content Include="bin\coretools\CrmSvcUtil.xml" />
-    <Content Include="bin\coretools\Microsoft.Crm.Sdk.Proxy.dll" />
-    <Content Include="bin\coretools\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
-    <Content Include="bin\coretools\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" />
-    <Content Include="bin\coretools\Microsoft.Xrm.Sdk.Deployment.dll" />
-    <Content Include="bin\coretools\Microsoft.Xrm.Sdk.dll" />
-    <Content Include="bin\coretools\Microsoft.Xrm.Tooling.Connector.dll" />
-    <Content Include="bin\coretools\Microsoft.Xrm.Tooling.CrmConnectControl.dll" />
-    <Content Include="bin\coretools\Other Redistributable.txt" />
-    <Content Include="bin\coretools\SolutionPackager.exe" />
-    <Content Include="bin\Debug\AdvancedPluginDemo.dll" />
-    <Content Include="bin\Debug\AdvancedPluginDemo.pdb" />
-    <Content Include="CrmProxy\EarlyBoundGeneratorSettings\DLaB.EarlyBoundGenerator.DefaultSettings.xml" />
+    <Content Include="Proxy\EarlyBoundGeneratorSettings\DLaB.EarlyBoundGenerator.DefaultSettings.xml" />
     <Content Include="ILMergeOrder.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -177,9 +152,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Release\" />
     <Folder Include="Plugins\Unbound\" />
-    <Folder Include="spkl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

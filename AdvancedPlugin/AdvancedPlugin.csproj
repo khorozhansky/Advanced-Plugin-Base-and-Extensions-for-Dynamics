@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AdvancedPlugin</RootNamespace>
     <AssemblyName>AdvancedPlugin</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SccProjectName>SAK</SccProjectName>
@@ -91,26 +91,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugins\AdvancedTraceLogPluginBase.cs" />
     <Compile Include="Exceptions\PluginBusinessLogicExceptionWithFullLogging.cs" />
     <Compile Include="Exceptions\PluginBusinessLogicExceptionWithSimpleLogging.cs" />
     <Compile Include="Exceptions\PluginExceptionWithDetailsInUiAndWithLogging.cs" />
-    <Compile Include="Extensions\IValueExt.cs" />
-    <Compile Include="Logging\CustomTracingServiceTraceLogBase.cs" />
+    <Compile Include="Plugins\ExtendedOutOfBoxTraceLogPluginBase.cs" />
+    <Compile Include="Extensions\CollectionFieldExt.cs" />
+    <Compile Include="Extensions\FieldExt.cs" />
+    <Compile Include="Extensions\IFieldExt.cs" />
+    <Compile Include="Extensions\NullableEnumFieldExt.cs" />
+    <Compile Include="Extensions\SimpleFieldExt.cs" />
+    <Compile Include="Logging\CustomTracingServiceTraceLog.cs" />
     <Compile Include="Logging\ServiceBusTraceLog.cs" />
     <Compile Include="Logging\ExtendedOutOfBoxTraceLog.cs" />
     <Compile Include="Logging\AdvancedTraceLog.cs" />
     <Compile Include="Logging\TraceLogBase.cs" />
     <Compile Include="Logging\LogSettings.cs" />
-    <Compile Include="Extensions\CollectionValueExt.cs" />
-    <Compile Include="Extensions\NullableEnumValueExt.cs" />
+    <Compile Include="Constants\Mode.cs" />
+    <Compile Include="Plugins\IPluginContextBase.cs" />
+    <Compile Include="Constants\Stage.cs" />
     <Compile Include="TraceService\CustomTracingService.cs" />
     <Compile Include="Exceptions\PluginBusinessLogicException.cs" />
     <Compile Include="Exceptions\PluginExceptionBase.cs" />
     <Compile Include="Exceptions\PluginIgnoredExceptionWithLogging.cs" />
-    <Compile Include="IPluginContext.cs" />
-    <Compile Include="ManagerBase.cs" />
-    <Compile Include="PluginBase.cs" />
-    <Compile Include="PluginConstants.cs" />
+    <Compile Include="Plugins\IPluginContext.cs" />
+    <Compile Include="Managers\ManagerBase.cs" />
+    <Compile Include="Plugins\PluginBase.cs" />
+    <Compile Include="Constants\MessageName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ExecutionContextHelper.cs" />
     <Compile Include="Extensions\EntityExt.cs" />
@@ -118,12 +125,14 @@
     <Compile Include="Utils\FetchXmlQueryHelper.cs" />
     <Compile Include="Utils\JsonHelper.cs" />
     <Compile Include="Utils\PropertyHelper.cs" />
+    <Compile Include="Utils\RecordLocker.cs" />
+    <Compile Include="Utils\SecurityHelper.cs" />
     <Compile Include="Utils\TypeHelper.cs" />
-    <Compile Include="Extensions\SimpleValueExt.cs" />
+    <Compile Include="Utils\UserHelper.cs" />
     <Compile Include="Utils\XmlStringSerializeHelper.cs" />
-    <Compile Include="Extensions\ValueExt.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="ILMerge.props">
       <SubType>Designer</SubType>
     </None>

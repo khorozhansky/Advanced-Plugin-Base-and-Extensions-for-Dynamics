@@ -77,9 +77,9 @@
     /// <returns>
     /// Extended Field Value
     /// </returns>
-    public ValueExt<T, TEntity> GetValue<T>(Expression<Func<T>> propertyExpression)
+    public FieldExt<T, TEntity> GetValue<T>(Expression<Func<T>> propertyExpression)
     {
-      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
+      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExtractMethod.ByPropertyOrClassName);
       return this.GetValue<T>(attributeName);
     }
 
@@ -91,43 +91,44 @@
     /// <returns>
     /// Extended Field Value
     /// </returns>
-    public ValueExt<T, TEntity> GetValue<T>(string attributeName)
+    public FieldExt<T, TEntity> GetValue<T>(string attributeName)
     {
       var ignoreIsSpecifiedProperty = !this.currentIsTarget;
-      return new ValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName, ignoreIsSpecifiedProperty);
+      return new FieldExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName, ignoreIsSpecifiedProperty);
     }
 
-    public CollectionValueExt<T, TEntity> GetCollectionValue<T>(Expression<Func<T>> propertyExpression) where T : Entity
+    public CollectionFieldExt<T, TEntity> GetCollectionValue<T>(Expression<Func<T>> propertyExpression) where T : Entity
     {
-      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
+      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExtractMethod.ByPropertyOrClassName);
       return this.GetCollectionValue<T>(attributeName);
     }
 
-    public CollectionValueExt<T, TEntity> GetCollectionValue<T>(string attributeName) where T: Entity
+    public CollectionFieldExt<T, TEntity> GetCollectionValue<T>(string attributeName) where T: Entity
     {
-      return new CollectionValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
+      return new CollectionFieldExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
     }
 
-    public SimpleValueExt<T, TEntity> GetSimpleValueExt<T>(Expression<Func<T>> propertyExpression)
+    public SimpleFieldExt<T, TEntity> GetSimpleValueExt<T>(Expression<Func<T>> propertyExpression)
     {
-      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
+      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExtractMethod.ByPropertyOrClassName);
       return this.GetSimpleValueExt<T>(attributeName);
     }
 
-    public SimpleValueExt<T, TEntity> GetSimpleValueExt<T>(string attributeName)
+    public SimpleFieldExt<T, TEntity> GetSimpleValueExt<T>(string attributeName)
     {
-      return new SimpleValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
+      return new SimpleFieldExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
     }
 
-    public NullableEnumValueExt<T, TEntity> GetNullableEnumValueExt<T>(Expression<Func<T>> propertyExpression)
-    {
-      var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
-      return this.GetNullableEnumValueExt<T>(attributeName);
-    }
+    // TODO: Find a workaround to make GetNullableEnumValueExt<T>(Expression<Func<T>> propertyExpression) working
+    //public NullableEnumValueExt<T, TEntity> GetNullableEnumValueExt<T>(Expression<Func<T>> propertyExpression)
+    //{
+    //  var attributeName = propertyExpression.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName);
+    //  return this.GetNullableEnumValueExt<T>(attributeName);
+    //}
 
-    public NullableEnumValueExt<T, TEntity> GetNullableEnumValueExt<T>(string attributeName)
+    public NullableEnumFieldExt<T, TEntity> GetNullableEnumValueExt<T>(string attributeName)
     {
-      return new NullableEnumValueExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
+      return new NullableEnumFieldExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
     }
   }
 }

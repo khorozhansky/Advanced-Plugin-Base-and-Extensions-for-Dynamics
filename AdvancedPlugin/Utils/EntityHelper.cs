@@ -12,7 +12,7 @@
   /// <summary>
   /// Defines a set of methods to extract Attribute/Field Name of CRM Entity
   /// </summary>
-  public enum LogicalNameExractMethod
+  public enum LogicalNameExtractMethod
   {
     /// <summary>
     /// Using property name
@@ -67,7 +67,7 @@
     /// Gets the attribute value as some <see cref="Enum"/> value.
     /// </summary>
     /// <remarks>
-    /// Use it with OptionSet, State or Status fields
+    /// Use it with OptionSet, State or Status fields ONLY IF YOU WORK WITH CORRESPONDING ENUM FIELDS
     /// </remarks>
     /// <typeparam name="T">An <see cref="Enum"/> defined for possible values of an OptionSet, State or Status field type</typeparam>
     /// <param name="entity">The entity.</param>
@@ -107,7 +107,7 @@
     /// Gets the attribute value of a "simple field" (like int?, Guid?, Money, DateTime? and so forth)
     /// ATTENTION! 
     ///   1. Do NOT use to get a value as collection (any <see cref="IEnumerable{T}"/>). Use <see cref="GetCollectionAttrValue{T}"/> for such a case.
-    ///   2. Do NOT use to get a value as <see cref="Enum"/> for OptionSet, State or Status field. Use <see cref="GetNullableEnumAttrValue{T}"/> for such a case.    
+    ///   2. Do NOT use to get a value as <see cref="Enum"/> for OptionSet, State or Status field IF YOU WORK WITH CORRESPONDING ENUM FIELDS. Use <see cref="GetNullableEnumAttrValue{T}"/> for such a case.    
     /// </summary>
     /// <typeparam name="T">A "simple type" (Do NOT use any <see cref="IEnumerable{T}"/> or <see cref="Enum"/>)</typeparam>
     /// <param name="entity">The entity.</param>
@@ -166,11 +166,12 @@
       var underlyingType = Nullable.GetUnderlyingType(type);
       if (underlyingType != null && underlyingType.IsEnum)
       {
+        // ReSharper disable once UsePatternMatching
         var optionSetValue = value as OptionSetValue;
         return optionSetValue == null ? defaultValue : (T)Enum.ToObject(underlyingType, optionSetValue.Value);
       }
 
-      if (type.IsGenericType)
+      if (TypeHelper.IsGenericEnumerable(type))
       {
         if (typeof(IEnumerable<>).IsAssignableFrom(type.GetGenericTypeDefinition()))
         {
@@ -200,22 +201,6 @@
           }
 
           return (T)containerList;
-
-
-          
-          //// ReSharper disable once PossibleNullReferenceException
-          //var toEntityGenericMethod = typeof(Entity).GetMethod("ToEntity").MakeGenericMethod(enumerableType);
-
-          //Type listType = typeof(List<>).MakeGenericType(enumerableType);
-          //dynamic list = Activator.CreateInstance(listType);
-          //foreach (var collectionEntity in collection.Entities)
-          //{
-          //  list.Add(toEntityGenericMethod.Invoke(collectionEntity, null));
-          //}
-
-          //return (T)list;
-          //list.AddRange(collection.Entities.Select(e => toEntityGenericMethod.Invoke(e, null)).ToList());
-          //return (T)collection.Entities.Select(e => toEntityGenericMethod.Invoke(e, null));
         }
 
         throw new NotImplementedException($"Getting attribute value as {type.FullName} is not implemented.");
@@ -261,7 +246,7 @@
     /// <param name="propertyExpression">The property expression.</param>
     /// <param name="value">The value.</param>
     /// <param name="method">The method.</param>
-    public static void SetAttrValue<T>(this Entity entity, Expression<Func<T>> propertyExpression, T value, LogicalNameExractMethod method = LogicalNameExractMethod.ByPropertyOrClassName)
+    public static void SetAttrValue<T>(this Entity entity, Expression<Func<T>> propertyExpression, T value, LogicalNameExtractMethod method = LogicalNameExtractMethod.ByPropertyOrClassName)
     {
       var entityAttributeName = propertyExpression.ExtractEntityAttributeName(method);
       entity.SetAttrValue(entityAttributeName, (object)value);
@@ -299,7 +284,7 @@
     /// <param name="method">
     /// The method.
     /// </param>
-    public static void RemoveAttr<T>(this Entity entity, Expression<Func<T>> propertyExpression, LogicalNameExractMethod method = LogicalNameExractMethod.ByPropertyOrClassName)
+    public static void RemoveAttr<T>(this Entity entity, Expression<Func<T>> propertyExpression, LogicalNameExtractMethod method = LogicalNameExtractMethod.ByPropertyOrClassName)
     {
       var entityAttributeName = propertyExpression.ExtractEntityAttributeName(method);
       entity.RemoveAttr(entityAttributeName);
@@ -323,7 +308,7 @@
     /// <returns>
     /// <c>True</c> if the column found
     /// </returns>
-    public static bool Contains<T>(this ColumnSet columnSet, Expression<Func<T>> propertyExpression, LogicalNameExractMethod method = LogicalNameExractMethod.ByPropertyOrClassName)
+    public static bool Contains<T>(this ColumnSet columnSet, Expression<Func<T>> propertyExpression, LogicalNameExtractMethod method = LogicalNameExtractMethod.ByPropertyOrClassName)
     {
       var entityAttributeName = propertyExpression.ExtractEntityAttributeName(method);
       return columnSet.Columns.Contains(entityAttributeName);
@@ -344,7 +329,7 @@
     /// <param name="method">
     /// The method.
     /// </param>
-    public static void AddColumn<T>(this ColumnSet columnSet, Expression<Func<T>> propertyExpression, LogicalNameExractMethod method = LogicalNameExractMethod.ByPropertyOrClassName)
+    public static void AddColumn<T>(this ColumnSet columnSet, Expression<Func<T>> propertyExpression, LogicalNameExtractMethod method = LogicalNameExtractMethod.ByPropertyOrClassName)
     {
       var entityAttributeName = propertyExpression.ExtractEntityAttributeName(method);
       columnSet.AddColumn(entityAttributeName);
@@ -365,7 +350,7 @@
     /// <param name="method">
     /// The method.
     /// </param>
-    public static void Remove<T>(this AttributeCollection attributeCollection, Expression<Func<T>> propertyExpression, LogicalNameExractMethod method = LogicalNameExractMethod.ByPropertyOrClassName)
+    public static void Remove<T>(this AttributeCollection attributeCollection, Expression<Func<T>> propertyExpression, LogicalNameExtractMethod method = LogicalNameExtractMethod.ByPropertyOrClassName)
     {
       var entityAttributeName = propertyExpression.ExtractEntityAttributeName(method);
       attributeCollection.Remove(entityAttributeName);
@@ -414,7 +399,7 @@
     /// <returns>
     /// The <see cref="string"/>.
     /// </returns>
-    public static string GetFormattedAttrValue<T>(this Entity entity, Expression<Func<T>> propertyExpression, LogicalNameExractMethod method = LogicalNameExractMethod.ByPropertyOrClassName)
+    public static string GetFormattedAttrValue<T>(this Entity entity, Expression<Func<T>> propertyExpression, LogicalNameExtractMethod method = LogicalNameExtractMethod.ByPropertyOrClassName)
     {
       var propertyName = propertyExpression.ExtractPropertyName().ToLowerInvariant();
       return entity.GetFormattedAttrValue(propertyName);
@@ -438,14 +423,14 @@
     /// <exception cref="NotImplementedException">
     /// Attribute name extraction method is not supported.
     /// </exception>
-    public static string ExtractEntityAttributeName<T>(this Expression<Func<T>> propertyExpression, LogicalNameExractMethod method)
+    public static string ExtractEntityAttributeName<T>(this Expression<Func<T>> propertyExpression, LogicalNameExtractMethod method)
     {
       switch (method)
       {
-        case LogicalNameExractMethod.ByPropertyOrClassName:
+        case LogicalNameExtractMethod.ByPropertyOrClassName:
           return propertyExpression.ExtractPropertyName().ToLowerInvariant();
 
-        case LogicalNameExractMethod.ByLogicalNameAttribute:
+        case LogicalNameExtractMethod.ByLogicalNameAttribute:
           var propertyAttribute = propertyExpression.ExtractPropertyAttribute<T, AttributeLogicalNameAttribute>();
           return propertyAttribute.LogicalName.ToLowerInvariant();
 
@@ -454,7 +439,7 @@
       }
     }
 
-    public static bool GetFieldSpecified(this Entity entity, params Expression<Func<object>>[] fields)
+    public static bool GetIsAnyFieldSpecified(this Entity entity, params Expression<Func<object>>[] fields)
     {
       if (entity == null || fields == null || fields.Length == 0)
       {
@@ -462,10 +447,10 @@
       }
 
       var fieldNames = fields
-        .Select(r => r.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName))
+        .Select(r => r.ExtractEntityAttributeName(LogicalNameExtractMethod.ByPropertyOrClassName))
         .ToArray();
 
-      return entity.GetFieldSpecified(fieldNames);
+      return entity.GetIsAnyFieldSpecified(fieldNames);
     }
 
     /// <summary>
@@ -474,20 +459,67 @@
     /// <param name="entity">The entity.</param>
     /// <param name="fields">The monitored fields.</param>
     /// <returns>True in case any field is specified</returns>
-    public static bool GetFieldSpecified(this Entity entity, params string[] fields)
+    public static bool GetIsAnyFieldSpecified(this Entity entity, params string[] fields)
     {
       if (entity == null || fields == null || fields.Length == 0)
       {
         return false;
       }
 
-      return entity
-        .Attributes.Select(r => r.Key)
-        .Where(fields.Contains)
-        .Any();
+      return fields.Any(entity.Attributes.ContainsKey);
     }
 
-    public static bool GetFieldSpecifiedExceptExcluded(this Entity entity, params Expression<Func<object>>[] excludedFields)
+    /// <summary>
+    /// Gets a value indicating whether all of the given fields are specified.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
+    /// <param name="fields">The monitored fields.</param>
+    /// <returns>True in case all fields are specified</returns>
+    public static bool GetAreAllFieldsSpecified(this Entity entity, params string[] fields)
+    {
+      if (entity == null || fields == null || fields.Length == 0)
+      {
+        return false;
+      }
+
+      return fields.All(entity.Attributes.ContainsKey);
+    }
+
+    /// <summary>
+    /// Gets the unspecified fields.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
+    /// <param name="fields">The monitored fields.</param>
+    /// <returns>The list of unspecified fields if any, otherwise null</returns>
+    public static string[] GetUnspecifiedFields(this Entity entity, params string[] fields)
+    {
+      if (entity == null || fields == null || fields.Length == 0)
+      {
+        return null;
+      }
+
+      return fields
+        .Where(r => !entity.Attributes.ContainsKey(r))
+        .ToArray();
+    }
+
+    /// <summary>
+    /// Gets a value indicating the given field specified.
+    /// </summary>
+    /// <param name="entity">The entity.</param>
+    /// <param name="field">The monitored field.</param>
+    /// <returns>True in case the field is specified</returns>
+    public static bool GetIsFieldSpecified(this Entity entity, string field)
+    {
+      if (entity == null || field == null)
+      {
+        return false;
+      }
+
+      return entity.Attributes.ContainsKey(field);
+    }
+
+    public static bool GetIsAnyFieldSpecifiedExceptExcluded(this Entity entity, params Expression<Func<object>>[] excludedFields)
     {
       if (entity == null || excludedFields == null || excludedFields.Length == 0)
       {
@@ -495,10 +527,10 @@
       }
 
       var fieldNames = excludedFields
-        .Select(r => r.ExtractEntityAttributeName(LogicalNameExractMethod.ByPropertyOrClassName))
+        .Select(r => r.ExtractEntityAttributeName(LogicalNameExtractMethod.ByPropertyOrClassName))
         .ToArray();
 
-      return entity.GetFieldSpecifiedExceptExcluded(fieldNames);
+      return entity.GetIsAnyFieldSpecifiedExceptExcluded(fieldNames);
     }
 
     /// <summary>
@@ -507,7 +539,7 @@
     /// <param name="entity">The entity.</param>
     /// <param name="excludedFields">The excluded fields.</param>
     /// <returns>True in case any field is specified excepting the given ones</returns>
-    public static bool GetFieldSpecifiedExceptExcluded(this Entity entity, params string[] excludedFields)
+    public static bool GetIsAnyFieldSpecifiedExceptExcluded(this Entity entity, params string[] excludedFields)
     {
       if (entity == null)
       {

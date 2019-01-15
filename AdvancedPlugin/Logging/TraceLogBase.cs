@@ -4,6 +4,8 @@
   using System.ServiceModel;
   using System.Text;
 
+  using AdvancedPlugin.Plugins;
+
   using Exceptions;
 
   using Microsoft.Xrm.Sdk;
@@ -20,7 +22,7 @@
 
     private readonly Lazy<StringBuilder> traceDetailsStringBuilder;
 
-    protected TraceLogBase(IPluginContext pluginCtx, ITracingService systemTracingService)
+    protected TraceLogBase(IPluginContextBase pluginCtx, ITracingService systemTracingService)
     {
       this.PluginCtx = pluginCtx;
       this.SystemTracingService = systemTracingService;
@@ -144,7 +146,7 @@
       return this.SystemTracingService;
     }
 
-    protected IPluginContext PluginCtx { get; private set; }
+    protected IPluginContextBase PluginCtx { get; private set; }
 
     public void LogContext()
     {

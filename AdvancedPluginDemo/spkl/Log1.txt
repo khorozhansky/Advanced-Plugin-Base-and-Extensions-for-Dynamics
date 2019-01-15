@@ -1,3 +1,0 @@
-9:47:52 PM	Downloading Plugin/Workflow Activity Metadata
-9:47:52 PM	Searching for classes in 'D:\CRM\PROJECTS\AdvancedPlugin\AdvancedPluginDemo\spkl\..'
-9:47:52 PM	0 classes decorated with deployment attributes!

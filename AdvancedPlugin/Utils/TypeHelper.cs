@@ -4,6 +4,8 @@
   using System.Collections.Generic;
   using System.Linq;
 
+  using Microsoft.Xrm.Sdk;
+
   public static class TypeHelper
   {
     /// <summary>
@@ -32,6 +34,16 @@
     {
       return type.IsGenericType &&
          typeof(IEnumerable<>).IsAssignableFrom(type.GetGenericTypeDefinition());
+    }
+
+    /// <summary>
+    /// Converts money value to nullable decimal.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns>nullable decimal</returns>
+    public static decimal? ConvertToDecimal(Money value)
+    {
+      return value?.Value;
     }
   }
 }

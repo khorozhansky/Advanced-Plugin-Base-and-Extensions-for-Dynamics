@@ -2,11 +2,11 @@
 {
   using System;
 
-  using Logic.Account;
+  using AdvancedPluginDemo.Logic.Entities.Account;
+  using AdvancedPluginDemo.Plugins.Base;
+  using AdvancedPluginDemo.Proxy;
 
-  using CrmProxy;
-
-  public abstract class Base : ExtendedOutOfBoxTraceLogPluginBase<Account>
+  public abstract class Base : ExtendedOutOfBoxTraceLogPlugin<Account>
   {
     protected virtual void RunInManager(PluginContext pluginContext, Action<AccountManager> action)
     {

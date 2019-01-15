@@ -9,6 +9,7 @@
   public class CustomTracingService : ITracingService
   {
     private readonly Lazy<StringBuilder> sb;
+    private bool limitReached;
     private string cachedResult;
 
     public CustomTracingService()
@@ -20,7 +21,13 @@
 
     public void Trace(string format, params object[] args)
     {
-      if (this.Sb.Length > 0)
+      if (this.limitReached)
+      {
+        return;
+      }
+
+      var length = this.Sb.Length;
+      if (length > 0)
       {
         this.Sb.AppendLine();
       }
@@ -31,12 +38,15 @@
       }
 
       this.Sb.Append(format);
-      if (this.Sb.Length <= 10240)
+
+      const int CountLimit = 10240;
+      if (length <= CountLimit)
       {
         return;
       }
 
-      this.Sb.Remove(0, this.Sb.Length - 10240);
+      this.limitReached = true;
+      this.Sb.Remove(length - 1, length - CountLimit);
     }
 
     /// <summary>

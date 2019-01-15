@@ -1,20 +1,18 @@
 namespace AdvancedPlugin.Logging
 {
   using System;
-  using System.Collections.Generic;
-  using System.Linq;
+
+  using AdvancedPlugin.Plugins;
 
   using Exceptions;
-  using TraceService;
 
   using Microsoft.Xrm.Sdk;
-  using Microsoft.Xrm.Sdk.Messages;
 
-  public class ServiceBusTraceLog : CustomTracingServiceTraceLogBase
+  public class ServiceBusTraceLog : CustomTracingServiceTraceLog
   {
     private readonly Guid traceServiceBusEndpointId;
 
-    public ServiceBusTraceLog(IPluginContext pluginCtx, ITracingService systemTracingService, Guid traceServiceBusEndpointId)
+    public ServiceBusTraceLog(IPluginContextBase pluginCtx, ITracingService systemTracingService, Guid traceServiceBusEndpointId)
       : base(pluginCtx, systemTracingService)
     {
       this.traceServiceBusEndpointId = traceServiceBusEndpointId;

@@ -2,13 +2,13 @@
 {
   using System;
 
-  using AdvancedPluginDemo.Logic.Email;
+  using AdvancedPlugin.Plugins;
 
-  using Logic.Account;
+  using AdvancedPluginDemo.Logic.Entities.Email;
+  using AdvancedPluginDemo.Plugins.Base;
+  using AdvancedPluginDemo.Proxy;
 
-  using CrmProxy;
-
-  public abstract class Base : ExtendedOutOfBoxTraceLogPluginBase<Email>
+  public abstract class Base : ExtendedOutOfBoxTraceLogPlugin<Email>
   {
     protected virtual void RunInManager(PluginContext pluginContext, Action<EmailManager> action)
     {

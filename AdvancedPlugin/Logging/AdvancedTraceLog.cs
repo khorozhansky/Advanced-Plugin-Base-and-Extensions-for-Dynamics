@@ -4,14 +4,16 @@ namespace AdvancedPlugin.Logging
   using System.Collections.Generic;
   using System.Linq;
 
+  using AdvancedPlugin.Plugins;
+
   using Exceptions;
   
   using Microsoft.Xrm.Sdk;
   using Microsoft.Xrm.Sdk.Messages;
 
-  public class AdvancedTraceLog : CustomTracingServiceTraceLogBase
+  public class AdvancedTraceLog : CustomTracingServiceTraceLog
   {
-    public AdvancedTraceLog(IPluginContext pluginCtx, ITracingService systemTracingService)
+    public AdvancedTraceLog(IPluginContextBase pluginCtx, ITracingService systemTracingService)
       : base(pluginCtx, systemTracingService)
     {
     }

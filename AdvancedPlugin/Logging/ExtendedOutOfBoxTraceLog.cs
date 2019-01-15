@@ -2,20 +2,24 @@ namespace AdvancedPlugin.Logging
 {
   using System;
 
+  using AdvancedPlugin.Constants;
+  using AdvancedPlugin.Plugins;
+
   using Exceptions;
 
   using Microsoft.Xrm.Sdk;
 
   public class ExtendedOutOfBoxTraceLog : TraceLogBase
   {
-    public ExtendedOutOfBoxTraceLog(IPluginContext pluginCtx, ITracingService systemTracingService)
+    public ExtendedOutOfBoxTraceLog(IPluginContextBase pluginCtx, ITracingService systemTracingService)
       : base(pluginCtx, systemTracingService)
     {
     }
 
     protected override void LogContextAndHandleException(Exception exc)
     {
-      this.AddTraceDetailsInfo(exc);
+      this.AddTraceDetailsInfo(exc, false, true);
+
       var traceDetails = this.GetTraceDetails(exc);
       var customVerboseLogSwitchedOn = this.PluginCtx.CustomVerboseLogSwitchedOn;
       var saveLog = true;
@@ -66,6 +70,7 @@ namespace AdvancedPlugin.Logging
         var pluginExecCtx = pluginCtx.ExecContext;
         this.TracingService.Trace("- CURRENT CONTEXT INFO -");
         this.TracingService.Trace($"PrimaryEntityId: {pluginExecCtx.PrimaryEntityId}");
+        this.TracingService.Trace($"PrimaryEntityName: {pluginExecCtx.PrimaryEntityName}");
         this.TracingService.Trace($"Stage: {pluginExecCtx.Stage}");
         this.TracingService.Trace($"Depth: {pluginExecCtx.Depth}");
         this.TracingService.Trace($"UserId: {pluginExecCtx.UserId}");
@@ -90,6 +95,8 @@ namespace AdvancedPlugin.Logging
         {
           this.TracingService.Trace("\r\n- PARENT CONTEXT INFO -");
           this.TracingService.Trace($"MessageName: {parentExecCtx.MessageName}");
+          this.TracingService.Trace($"PrimaryEntityName: {parentExecCtx.PrimaryEntityName}");
+          this.TracingService.Trace($"PrimaryEntityId: {parentExecCtx.PrimaryEntityId}");
           this.TracingService.Trace($"Stage: {parentExecCtx.Stage}");
           this.TracingService.Trace($"Mode: {parentExecCtx.Mode}");
           this.TracingService.Trace($"UserId: {parentExecCtx.UserId}");
@@ -98,6 +105,25 @@ namespace AdvancedPlugin.Logging
           this.TracingService.Trace($"OwningExtension: {parentExecCtx.OwningExtension?.Name}");
           this.TracingService.Trace(
             $"Shared Variables\r\n: {SerializeAndPrepareForMemoField(parentExecCtx.SharedVariables)}");
+
+          var traceGrandParentCtx =
+            parentExecCtx.Stage == (int)Stage.MainOperation && parentExecCtx.ParentContext != null;
+          if (traceGrandParentCtx)
+          {
+            var grandParentCtx = parentExecCtx.ParentContext;
+            this.TracingService.Trace("\r\n- GRAND PARENT CONTEXT INFO -");
+            this.TracingService.Trace($"MessageName: {grandParentCtx.MessageName}");
+            this.TracingService.Trace($"PrimaryEntityName: {grandParentCtx.PrimaryEntityName}");
+            this.TracingService.Trace($"PrimaryEntityId: {grandParentCtx.PrimaryEntityId}");
+            this.TracingService.Trace($"Stage: {grandParentCtx.Stage}");
+            this.TracingService.Trace($"Mode: {grandParentCtx.Mode}");
+            this.TracingService.Trace($"UserId: {grandParentCtx.UserId}");
+            this.TracingService.Trace($"InitiatingUserId: {grandParentCtx.InitiatingUserId}");
+            this.TracingService.Trace($"IsInTransaction: {grandParentCtx.IsInTransaction}");
+            this.TracingService.Trace($"OwningExtension: {grandParentCtx.OwningExtension?.Name}");
+            this.TracingService.Trace(
+              $"Shared Variables\r\n: {SerializeAndPrepareForMemoField(grandParentCtx.SharedVariables)}");
+          }
         }
 
         if (saveTraceDetailsToTraceText)

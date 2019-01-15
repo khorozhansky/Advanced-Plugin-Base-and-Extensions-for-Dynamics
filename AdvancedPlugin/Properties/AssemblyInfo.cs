@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AdvancedPlugin")]
+[assembly: AssemblyTitle("Advanced Dynamics 365 Plugin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AdvancedPlugin")]
+[assembly: AssemblyProduct("Advanced Dynamics 365 Plugin")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3a3c951a-a6f1-453d-a6e2-790070477b7b")]
+[assembly: Guid("4BD7F400-8B1D-4B7D-8E96-422C9F31DDAD")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("3.0.0.1")]
-[assembly: AssemblyFileVersion("3.0.0.1")]
+[assembly: AssemblyVersion("4.0.1.5")]
+[assembly: AssemblyFileVersion("4.0.1.5")]

@@ -2,10 +2,13 @@
 {
   using System;
 
-  using AdvancedPluginDemo.CrmProxy;
-  using AdvancedPluginDemo.Logic.Contact;
+  using AdvancedPluginDemo.Logic.Entities.Contact;
 
-  public abstract class Base : ExtendedOutOfBoxTraceLogPluginBase<Contact>
+  using Proxy;
+
+  using AdvancedPluginDemo.Plugins.Base;
+
+  public abstract class Base : ExtendedOutOfBoxTraceLogPlugin<Contact>
   {
     protected virtual void RunInManager(PluginContext pluginContext, Action<ContactManager> action)
     {
