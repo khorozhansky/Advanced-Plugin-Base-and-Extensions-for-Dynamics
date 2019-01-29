@@ -1,7 +1,10 @@
 ﻿namespace AdvancedPluginDemo.Logic.Entities.Contact
 {
+  using System;
+  using System.Linq;
   using System.Text;
 
+  using AdvancedPlugin.Extensions;
   using AdvancedPlugin.Utils;
 
   using AdvancedPluginDemo.Logic.Base;
@@ -11,9 +14,27 @@
 
   public class ContactManager: ExtendedOutOfBoxTraceLogManagerBase<Contact>
   {
+    private FieldExt<EntityReference, Contact> parentAccountRefExt;
+
     public ContactManager(Plugins.Bound.Contact.Base.PluginContext pluginCtx)
       : base(pluginCtx)
     {
+    }
+
+    private FieldExt<EntityReference, Contact> ParentAccountRefExt
+    {
+      get
+      {
+        if (this.parentAccountRefExt != null)
+        {
+          return this.parentAccountRefExt;
+        }
+
+        var pluginCtx = this.PluginCtx;
+        var entityExt = pluginCtx.TargetEntityExt;
+        this.parentAccountRefExt = entityExt.GetValue<EntityReference>(Contact.Fields.ParentCustomerId);
+        return this.parentAccountRefExt;
+      }
     }
 
     #region Create Message
@@ -26,11 +47,18 @@
       this.ValidateMandatoryFields();
     }
 
+    public void CreatePreOperationSync()
+    {
+      this.ValidateByBaseValidators();
+      this.WrapInTraceWithElapsedTime(
+        this.SetCountryAndStateBasedOnParentAccount, nameof(this.SetCountryAndStateBasedOnParentAccount));
+    }
+
     public void CreatePostOperationSync()
     {
       this.ValidateByBaseValidators();
       this.WrapInTraceWithElapsedTime(
-        this.CreateTaskWithTopAccountsStat, nameof(this.CreateTaskWithTopAccountsStat)); 
+        this.CreateTaskWithTopAccountsStat, nameof(this.CreateTaskWithTopAccountsStat));
     }
 
     #endregion
@@ -44,6 +72,14 @@
 
       this.RejectProtectedFieldsChange();
       this.ValidateMandatoryFields();
+    }
+
+    public void UpdatePreOperationSync()
+    {
+      this.ValidateByBaseValidators();
+      this.ValidatePreImage();
+      this.WrapInTraceWithElapsedTime(
+        this.SetCountryAndStateBasedOnParentAccount, nameof(this.SetCountryAndStateBasedOnParentAccount));
     }
 
     public void UpdatePostOperationSync()
@@ -88,16 +124,43 @@
       this.ValidateForMandatoryFields(mandatoryFields);
     }
 
+    private void SetCountryAndStateBasedOnParentAccount()
+    {
+      var pluginCtx = this.PluginCtx;
+      var skipProcessing = !this.ParentAccountRefExt.IsModified || this.ParentAccountRefExt.IsSetToNull;
+      if (skipProcessing)
+      {
+        return;
+      }
+
+      var parentAccountId = this.ParentAccountRefExt.Value.Id;
+      var parentAccount = pluginCtx.OrgCtx.AccountSet
+        .Where(r => r.AccountId == parentAccountId)
+        .Select(r => new Account
+                       {
+                         AccountId = r.AccountId,
+                         Address1_StateOrProvince = r.Address1_StateOrProvince,
+                         Address1_Country = r.Address1_Country
+                       })
+        .FirstOrDefault();
+      if (parentAccount == null)
+      {
+        throw new NullReferenceException(nameof(parentAccount));
+      }
+
+      var targetEntity = pluginCtx.TargetEntity;
+      targetEntity.Address1_StateOrProvince = parentAccount.Address1_StateOrProvince;
+      targetEntity.Address1_Country = parentAccount.Address1_Country;
+    }
+
     private void CreateTaskWithTopAccountsStat()
     {
       var pluginCtx = this.PluginCtx;
-      var entityExt = pluginCtx.TargetEntityExt;
-      var parentAccountRefExt = entityExt.GetValue<EntityReference>(Contact.Fields.ParentCustomerId);
       var createTaskWithTopAccountsStat =
-        parentAccountRefExt.IsModified && (
-             parentAccountRefExt.OldValue?.LogicalName == Account.EntityLogicalName
+        this.ParentAccountRefExt.IsModified && (
+             this.ParentAccountRefExt.OldValue?.LogicalName == Account.EntityLogicalName
              ||
-             parentAccountRefExt.NewValue?.LogicalName == Account.EntityLogicalName)
+             this.ParentAccountRefExt.NewValue?.LogicalName == Account.EntityLogicalName)
         ;
       if (!createTaskWithTopAccountsStat)
       {
@@ -139,9 +202,9 @@
       var task = new Task
                    {
                      PriorityCodeEnum = Task_PriorityCode.Low,
-                     Subject = $"Please review top {TopAccountQt} contacts.",
+                     Subject = $"Please review top {TopAccountQt} accounts.",
                      Description = description.ToString()
-      };
+                   };
 
       orgService.Create(task);
     }

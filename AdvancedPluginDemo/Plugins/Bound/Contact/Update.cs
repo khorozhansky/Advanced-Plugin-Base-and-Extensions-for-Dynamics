@@ -23,6 +23,13 @@ namespace AdvancedPluginDemo.Plugins.Bound.Contact
           pluginCtx, m => m.UpdatePreValidationSync()));
 
       this.RegisterPluginStep(
+        Stage.PreOperation,
+        Mode.Synchronous,
+        MessageName.Update,
+        pluginCtx => this.RunInManager(
+          pluginCtx, m => m.UpdatePreOperationSync()));
+
+      this.RegisterPluginStep(
         Stage.PostOperation,
         Mode.Synchronous,
         MessageName.Update,

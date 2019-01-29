@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPlugin", "AdvancedP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemo", "AdvancedPluginDemo\AdvancedPluginDemo.csproj", "{47449D78-DE12-4B27-B262-84C7F926C6D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemoUnitTests", "AdvancedPluginDemoUnitTests\AdvancedPluginDemoUnitTests.csproj", "{E1FBB1CB-2C4A-4171-AEC0-0B9A283C8FE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemoTests01", "AdvancedPluginDemoTests01\AdvancedPluginDemoTests01.csproj", "{E1FBB1CB-2C4A-4171-AEC0-0B9A283C8FE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
