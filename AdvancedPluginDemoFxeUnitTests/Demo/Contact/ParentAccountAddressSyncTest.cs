@@ -14,7 +14,6 @@
   public class ParentAccountAddressSyncTest
   {
     [Fact]
-    [Trait("Category", "Unit")]
     // ReSharper disable once InconsistentNaming
     public void When_ContactIsCreatedAndParentAccountIsSet_Expect_CountryAndStateAreUpdated()
     {
@@ -40,7 +39,6 @@
     }
 
     [Fact]
-    [Trait("Category", "Unit")]
     // ReSharper disable once InconsistentNaming
     public void When_ContactIsUpdatedAndParentAccountIsSet_Expect_CountryAndStateAreUpdated()
     {
@@ -68,7 +66,6 @@
     }
 
     [Fact]
-    [Trait("Category", "Unit")]
     // ReSharper disable once InconsistentNaming
     public void When_ContactIsUpdatedAndParentAccountIsCleanedUp_Expect_CountryAndStateAreNotChanged()
     {

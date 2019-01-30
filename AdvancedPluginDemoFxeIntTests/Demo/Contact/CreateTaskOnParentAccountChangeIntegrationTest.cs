@@ -1,27 +1,26 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace AdvancedPluginDemoUnitTests.Demo.Contact
+namespace AdvancedPluginDemoFxeIntTests.Demo.Contact
 {
   extern alias AdvPlg;
+  using AdvPlg::AdvancedPlugin.Utils;
+
   using System;
   using System.Collections.Generic;
   using System.Linq;
-
-  using AdvancedPluginDemo.Proxy;
-
-  using AdvancedPluginDemoUnitTests.Demo.Common;
-  using AdvancedPluginDemoUnitTests.Ext;
-
-  using AdvPlg::AdvancedPlugin.Utils;
 
   using Microsoft.Xrm.Sdk;
 
   using Xunit;
 
+  using AdvancedPluginDemo.Proxy;
+
+  using AdvancedPluginDemoFxeIntTests.Demo.Common;
+  using AdvancedPluginDemoFxeIntTests.Ext;
+
   [CollectionDefinition("Non-Parallel Collection", DisableParallelization = true)]
   public class CreateTaskOnParentAccountChangeIntegrationTest
   {
     [Fact]
-    [Trait("Category", "Integration")]
     public void When_ContactIsCreatedAndParentAccountIsSet_Expected_TaskIsCreated()
     {
       var ctx = new XrmRealContextWithProxy(CommonConstants.CrmConn01);
@@ -83,6 +82,5 @@ namespace AdvancedPluginDemoUnitTests.Demo.Contact
           MobilePhone = "12312312",
           EMailAddress1 = "john@dummy_email_domain.com",
         };
-
   }
 }

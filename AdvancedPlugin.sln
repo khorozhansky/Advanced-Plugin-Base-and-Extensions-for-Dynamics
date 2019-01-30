@@ -7,7 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPlugin", "AdvancedP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemo", "AdvancedPluginDemo\AdvancedPluginDemo.csproj", "{47449D78-DE12-4B27-B262-84C7F926C6D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemoTests01", "AdvancedPluginDemoTests01\AdvancedPluginDemoTests01.csproj", "{E1FBB1CB-2C4A-4171-AEC0-0B9A283C8FE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemoFxeUnitTests", "AdvancedPluginDemoFxeUnitTests\AdvancedPluginDemoFxeUnitTests.csproj", "{E1FBB1CB-2C4A-4171-AEC0-0B9A283C8FE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemoFxeIntTests", "AdvancedPluginDemoFxeIntTests\AdvancedPluginDemoFxeIntTests.csproj", "{867127D5-8972-47BB-8139-576A2D545CB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPluginDemoXutUnitTests", "AdvancedPluginDemoXutUnitTests\AdvancedPluginDemoXutUnitTests.csproj", "{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,22 @@ Global
 		{E1FBB1CB-2C4A-4171-AEC0-0B9A283C8FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E1FBB1CB-2C4A-4171-AEC0-0B9A283C8FE5}.ReleaseWithoutDeploy|Any CPU.ActiveCfg = Release|Any CPU
 		{E1FBB1CB-2C4A-4171-AEC0-0B9A283C8FE5}.ReleaseWithoutDeploy|Any CPU.Build.0 = Release|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.DebugWithoutDeploy|Any CPU.ActiveCfg = Debug|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.DebugWithoutDeploy|Any CPU.Build.0 = Debug|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.ReleaseWithoutDeploy|Any CPU.ActiveCfg = Release|Any CPU
+		{867127D5-8972-47BB-8139-576A2D545CB7}.ReleaseWithoutDeploy|Any CPU.Build.0 = Release|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.DebugWithoutDeploy|Any CPU.ActiveCfg = Debug|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.DebugWithoutDeploy|Any CPU.Build.0 = Debug|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.ReleaseWithoutDeploy|Any CPU.ActiveCfg = Release|Any CPU
+		{9986753C-9FFC-4C58-919A-A9CB1DF4A4E9}.ReleaseWithoutDeploy|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,7 +18,6 @@ namespace AdvancedPluginDemoUnitTests.Demo.Contact
     [Theory]
     [InlineData("mobilephone")]
     [InlineData("emailaddress1")]
-    [Trait("Category", "Unit")]
     public void When_ContactIsBeingCreatedAndMandatoryFieldIsNotSpecified_Expect_PluginToFail(string fieldName)
     {
       var ctx = new XrmFakedContextWithProxy();
@@ -40,7 +39,6 @@ namespace AdvancedPluginDemoUnitTests.Demo.Contact
     }
 
     [Fact]
-    [Trait("Category", "Unit")]
     public void When_ContactIsBeingCreatedAndMandatoryFieldsAreSpecified_Expect_PluginNotToFail()
     {
       var ctx = new XrmFakedContextWithProxy();
@@ -61,7 +59,6 @@ namespace AdvancedPluginDemoUnitTests.Demo.Contact
     [Theory]
     [InlineData("mobilephone")]
     [InlineData("emailaddress1")]
-    [Trait("Category", "Unit")]
     public void When_ContactIsBeingUpdatedAndMandatoryFieldIsNotSpecified_Expect_PluginToFail(string fieldName)
     {
       var ctx = new XrmFakedContextWithProxy();
@@ -86,7 +83,6 @@ namespace AdvancedPluginDemoUnitTests.Demo.Contact
     }
 
     [Fact]
-    [Trait("Category", "Unit")]
     public void When_ContactIsBeingUpdatedAndMandatoryFieldsAreSpecified_Expect_PluginNotToFail()
     {
       var ctx = new XrmFakedContextWithProxy();

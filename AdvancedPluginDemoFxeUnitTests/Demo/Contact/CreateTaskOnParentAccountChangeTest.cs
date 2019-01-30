@@ -2,6 +2,7 @@
 namespace AdvancedPluginDemoUnitTests.Demo.Contact
 {
   using System;
+  using System.Collections.Generic;
   using System.Linq;
 
   using AdvancedPluginDemo.Plugins.Bound.Contact;
@@ -10,14 +11,18 @@ namespace AdvancedPluginDemoUnitTests.Demo.Contact
   using AdvancedPluginDemoUnitTests.Ext;
   using AdvancedPluginDemoUnitTests.Ext.FakedPluginExecCtx;
 
+  using FakeXrmEasy;
+  using FakeXrmEasy.Extensions;
+  using FakeXrmEasy.Permissions;
+
   using Microsoft.Xrm.Sdk;
+  using Microsoft.Xrm.Sdk.Metadata;
 
   using Xunit;
 
   public class CreateTaskOnParentAccountChangeTest
   {
     [Fact]
-    [Trait("Category", "Unit")]
     public void When_ContactIsCreatedAndParentAccountIsSet_Expected_TaskIsCreated()
     {
       var ctx = new XrmFakedContextWithProxy();
@@ -31,6 +36,37 @@ namespace AdvancedPluginDemoUnitTests.Demo.Contact
                         };
 
       ctx.ExecutePluginWithConfigurations<Create>(pluginCtx, string.Empty, string.Empty);
+      ValidateTask(ctx);
+    }
+
+    [Fact]
+    public void When_ContactIsUpdatedAndParentAccountIsSet_Expected_TaskIsCreated()
+    {
+      var ctx = new XrmFakedContextWithProxy();
+      var service = ctx.GetOrganizationService();
+      var oldParentAccount = TestAccountBase;
+      service.Create(oldParentAccount);
+      var contact = GetTestContactWithParentAccount(oldParentAccount.ToEntityReference());
+      service.Create(contact);
+      var newParentAccount = TestAccountBase;
+      var target = new Contact
+                     {
+                       ContactId = contact.ContactId,
+                       ParentCustomerId = newParentAccount.ToEntityReference()
+                     };
+
+      var pluginCtx = new UpdatePostOperationSyncBase(ctx)
+                        {
+                          TargetEntity = target,
+                          PreImage = contact
+                        };
+
+      ctx.ExecutePluginWithConfigurations<Update>(pluginCtx, string.Empty, string.Empty);
+      ValidateTask(ctx);
+    }
+
+    private static void ValidateTask(IXrmContext ctx)
+    {
       var task = ctx.CreateQuery<Task>().FirstOrDefault();
       Assert.NotNull(task);
       Assert.Equal(Task_PriorityCode.Low, task.PriorityCodeEnum);

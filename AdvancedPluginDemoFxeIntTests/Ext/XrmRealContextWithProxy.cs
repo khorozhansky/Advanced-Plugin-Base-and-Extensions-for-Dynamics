@@ -1,4 +1,4 @@
-﻿namespace AdvancedPluginDemoUnitTests.Ext
+﻿namespace AdvancedPluginDemoFxeIntTests.Ext
 {
   using System.Reflection;
 
@@ -15,6 +15,9 @@
       this.ProxyTypesAssembly = Assembly.GetAssembly(typeof(SystemUser));
     }
 
-    public OrganizationServiceContext OrgCtx => new OrganizationServiceContext(this.GetOrganizationService());
+    public OrganizationServiceContext OrgCtx => new OrganizationServiceContext(this.GetOrganizationService())
+                                                  {
+                                                    MergeOption = MergeOption.NoTracking
+                                                  };
   }
 }
