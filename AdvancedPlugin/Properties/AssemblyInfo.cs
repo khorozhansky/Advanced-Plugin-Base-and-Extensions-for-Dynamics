@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Advanced Dynamics 365 Plugin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A helpful set of base plugins and extensions for them.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Pavel Khorozhansky")]
 [assembly: AssemblyProduct("Advanced Dynamics 365 Plugin")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
