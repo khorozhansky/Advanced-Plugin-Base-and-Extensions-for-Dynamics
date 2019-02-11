@@ -130,5 +130,10 @@
     {
       return new NullableEnumFieldExt<T, TEntity>(this.InitialEntity, this.CurrentEntity, attributeName);
     }
+
+    public BoxedFieldExt GetBoxedValueExt(string attributeName, string attributeTypeCode)
+    {
+      return new BoxedFieldExt(this.InitialEntity, this.CurrentEntity, attributeName, attributeTypeCode);
+    }
   }
 }

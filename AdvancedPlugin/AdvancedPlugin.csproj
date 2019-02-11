@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\BoxedFieldExt.cs" />
     <Compile Include="Plugins\AdvancedTraceLogPluginBase.cs" />
     <Compile Include="Exceptions\PluginBusinessLogicExceptionWithFullLogging.cs" />
     <Compile Include="Exceptions\PluginBusinessLogicExceptionWithSimpleLogging.cs" />

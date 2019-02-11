@@ -229,12 +229,12 @@
       /// <summary>
       /// The secured configuration
       /// </summary>
-      internal readonly string SecureConfig;
+      public readonly string SecureConfig;
 
       /// <summary>
       /// The unsecured configuration
       /// </summary>
-      internal readonly string UnsecureConfig;
+      public readonly string UnsecureConfig;
 
       #region PluginParameterKeyNames
 
