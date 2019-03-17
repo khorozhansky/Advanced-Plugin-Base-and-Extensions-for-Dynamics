@@ -199,6 +199,13 @@ namespace AdvancedPlugin.Extensions
       }
 
       var type = typeof(T);
+      if (type == typeof(OptionSetValueCollection))
+      {
+        var newIds = ((IEnumerable)newVal).Cast<OptionSetValue>().Select(r => r.Value).ToList();
+        var oldIds = ((IEnumerable)oldVal).Cast<OptionSetValue>().Select(r => r.Value).ToList();
+        return newIds.Except(oldIds).Union(oldIds.Except(newIds)).Any();
+      }
+
       if (!TypeHelper.IsGenericEnumerable(type))
       {
         return !newVal.Equals(oldVal);
