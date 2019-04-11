@@ -372,12 +372,28 @@
     EntityReference EntityMoniker { get; }
 
     /// <summary>
-    /// Gets the query.
+    /// Gets the query base.
     /// </summary>
     /// <value>
-    /// The query.
+    /// The query base.
+    /// </value>
+    QueryBase Query { get; }
+
+    /// <summary>
+    /// Gets the query expression.
+    /// </summary>
+    /// <value>
+    /// The query expression.
     /// </value>
     QueryExpression QueryExpr { get; }
+
+    /// <summary>
+    /// Gets the fetch expression.
+    /// </summary>
+    /// <value>
+    /// The fetch expression.
+    /// </value>
+    FetchExpression FetchExpr { get; }
 
     /// <summary>
     /// Gets the assignee.

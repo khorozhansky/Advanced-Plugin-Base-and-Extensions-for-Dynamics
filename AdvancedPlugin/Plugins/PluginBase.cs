@@ -499,9 +499,19 @@
       private TEntity postImageEntity;
 
       /// <summary>
+      /// Backing field for <see cref="Query"/>
+      /// </summary>
+      private QueryBase query;
+
+      /// <summary>
       /// Backing field for <see cref="QueryExpr"/>
       /// </summary>
-      private QueryExpression query;
+      private QueryExpression queryExp;
+
+      /// <summary>
+      /// Backing field for <see cref="FetchExpr"/>
+      /// </summary>
+      private FetchExpression fetchExp;
 
       /// <summary>
       /// Backing field for <see cref="Assignee"/>
@@ -1201,6 +1211,7 @@
       public string ParameterXml => 
         this.parameterXml ?? (this.parameterXml = this.GetInputParameter<string>(ParameterXmlKey));
 
+      /// <inheritdoc />
       /// <summary>
       /// Gets the subordinate reference.
       /// </summary>
@@ -1211,6 +1222,7 @@
         this.subordinateReference ?? 
           (this.subordinateReference = this.GetInputParameter<Guid>(SubordinateIdKey));
 
+      /// <inheritdoc />
       /// <summary>
       /// Gets the entity moniker.
       /// </summary>
@@ -1221,13 +1233,33 @@
         this.entityMoniker ?? (this.entityMoniker = this.GetInputParameter<EntityReference>(EntityMonikerKey));
 
       /// <summary>
-      /// Gets the query.
+      /// Gets the query base.
       /// </summary>
       /// <value>
-      /// The query.
+      /// The query base.
+      /// </value>
+      public QueryBase Query =>
+        this.query ?? (this.query = this.GetInputParameter(QueryKey) as QueryBase);
+
+      /// <inheritdoc />
+      /// <summary>
+      /// Gets the query expression.
+      /// </summary>
+      /// <value>
+      /// The query expression.
       /// </value>
       public QueryExpression QueryExpr => 
-        this.query ?? (this.query = this.GetInputParameter(QueryKey) as QueryExpression);
+        this.queryExp ?? (this.queryExp = this.Query as QueryExpression);
+
+      /// <inheritdoc />
+      /// <summary>
+      /// Gets the fetch expression.
+      /// </summary>
+      /// <value>
+      /// The fetch expression.
+      /// </value>
+      public FetchExpression FetchExpr =>
+        this.fetchExp ?? (this.fetchExp = this.Query as FetchExpression);
 
       /// <summary>
       /// Gets the pre image as <see cref="TEntity"/>.
